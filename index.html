@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Two Access</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --pink: #ff5c8a;
+  --red: #ff1744;
+  --bg-dark: #0d0d12;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1a0f1f, var(--bg-dark));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+}
+
+/* ===== CARD ===== */
+.card {
+  width: 90%;
+  max-width: 360px;
+  background: rgba(255, 92, 138, 0.08);
+  border: 1px solid rgba(255,92,138,0.3);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 0 40px rgba(255,92,138,0.25);
+}
+
+h2 {
+  text-align: center;
+  color: var(--pink);
+  margin-bottom: 20px;
+}
+
+/* ===== INPUT ===== */
+input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+}
+
+/* ===== BUTTON ===== */
+.enter-btn {
+  position: relative;
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+
+  color: #fff;
+  background: linear-gradient(135deg, var(--red), var(--pink));
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+
+  box-shadow:
+    0 0 20px rgba(255, 92, 138, 0.6),
+    0 0 40px rgba(255, 23, 68, 0.4);
+
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+
+.enter-btn:active {
+  transform: scale(0.95);
+}
+
+/* Ripple */
+.enter-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 10%, transparent 60%);
+  transform: scale(0);
+  opacity: 0;
+}
+
+.enter-btn.ripple::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* ===== RESULT ===== */
+.result {
+  display: none;
+  text-align: center;
+}
+
+.result p {
+  margin: 16px 0;
+  line-height: 1.5;
+}
+
+.fade-text {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInText 1.2s ease forwards;
+}
+
+.fade-text.delay-1 {
+  animation-delay: 0.3s;
+}
+
+.fade-text.delay-2 {
+  animation-delay: 0.9s;
+  letter-spacing: 2px;
+  color: #ff5c8a;
+  text-align: center;
+}
+
+@keyframes fadeInText {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enter-btn {
+  font-family: 'Orbitron', sans-serif; /* paksa futuristik */
+  font-weight: 600;
+  text-transform: uppercase;           /* SUBMIT / LOGIN */
+  letter-spacing: 2px;                 /* tegak & tegas */
+}
+</style>
+</head>
+
+<body>
+
+<!-- FORM -->
+<div class="card" id="formCard">
+  <h2 class="fade-text delay-1">CODE: 002 ACCESS</h2>
+
+  <input id="codename" placeholder="Code Name">
+  <input id="originWorld" placeholder="Origin World">
+  <input id="role" placeholder="Role">
+  <input id="coreInterest" placeholder="Core Interest">
+
+  <button class="enter-btn" onclick="enterWorld(event)">
+    Submit
+  </button>
+</div>
+
+<!-- RESULT -->
+<div class="card result" id="resultCard">
+  <h2 class="fade-text delay-2">NEURAL LINK ACTIVE</h2>
+  <p id="welcomeText"></p>
+
+  <button class="enter-btn" onclick="goWorld()">
+    Login
+  </button>
+</div>
+
+<script>function enterWorld(e) {
+  playClickSound(); // 🔊 SOUND MASUK
+
+  const btn = e.currentTarget;
+
+  const codename = document.getElementById("codename").value.trim();
+  const origin = document.getElementById("originWorld").value.trim();
+  const role = document.getElementById("role").value.trim();
+  const interest = document.getElementById("coreInterest").value.trim();
+
+  if (!codename || !origin || !role || !interest) {
+    alert("Fill in the data first, darling~");
+    return;
+  }
+
+  // Ripple
+  btn.classList.remove("ripple");
+  void btn.offsetWidth;
+  btn.classList.add("ripple");
+
+  document.getElementById("welcomeText").innerText =
+`Hi ${codename}.
+You've successfully filled in the data.
+Now, come to my place 😋`;
+
+  setTimeout(() => {
+    document.getElementById("formCard").style.display = "none";
+    document.getElementById("resultCard").style.display = "block";
+  }, 400);
+}
+
+function goWorld() {
+  playClickSound(); // 🔊 SOUND PROCEED
+
+  setTimeout(() => {
+    window.location.href = "https://axionlabs-082.github.io/my-waifu/";
+  }, 300);
+}
+
+</script>
+
+<script>
+function playClickSound() {
+  const sound = document.getElementById("clickSound");
+  sound.currentTime = 0;   // biar bisa diklik berkali-kali
+  sound.volume = 0.6;      // nyaman di telinga
+  sound.play().catch(() => {});
+}
+</script>
+
+<audio id="clickSound" preload="auto">
+  <source src="https://raw.githubusercontent.com/AxionLabs-082/my-Labs/main/audio/klik2.mp3" type="audio/mpeg">
+</audio>
+
+</body>
+</html>
